@@ -9,15 +9,18 @@ const JobListings = ({ isHome = false }) => {
   useEffect(() => {
     const fetchJobs = async () => {
       const apiUrl = isHome
-      ? '/api/jobs?_limit=3'
-      : '/api/jobs';
+        ? 'https://68359084cd78db2058c230df.mockapi.io/api/v/jobs?limit=3'
+        : 'https://68359084cd78db2058c230df.mockapi.io/api/v/jobs';
 
       try {
         const res = await fetch(apiUrl);
+        if (!res.ok) {
+          throw new Error(`Error: ${res.status}`);
+        }
         const data = await res.json();
         setJobs(data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching jobs:', error);
       } finally {
         setLoading(false);
       }
