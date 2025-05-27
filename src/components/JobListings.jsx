@@ -17,8 +17,7 @@ const JobListings = ({ isHome = false }) => {
         }
 
         const data = await res.json();
-
-        // Manually limit to 3 jobs if isHome is true
+        console.log('Fetched jobs:', data);
         setJobs(isHome ? data.slice(0, 3) : data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -39,12 +38,14 @@ const JobListings = ({ isHome = false }) => {
 
         {loading ? (
           <Spinner loading={loading} />
-        ) : (
+        ) : Array.isArray(jobs) && jobs.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {jobs.map((job) => (
               <JobListing key={job.id} job={job} />
             ))}
           </div>
+        ) : (
+          <p className="text-center text-gray-500">No jobs found.</p>
         )}
       </div>
     </section>
